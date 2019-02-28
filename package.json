@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "test": "node_modules/.bin/jest --watch",
-    "storybook": "start-storybook -p 9001 -c .storybook"
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "build": "rm -rf dist && ./node_modules/.bin/tsc -p tsconfig.json"
   },
   "dependencies": {
     "qr.js": "0.0.0"
