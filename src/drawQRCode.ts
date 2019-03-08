@@ -1,4 +1,4 @@
-import {DrawConfig, Options, ErrorCorrectionLevel} from './types'
+import {DrawConfig, Options, ErrorCorrectionLevel, DrawResult} from './types'
 import {getBloomLogo} from './getBloomLogo'
 
 const QRCodeImpl = require('qr.js/lib/QRCode')
@@ -192,7 +192,7 @@ const drawEyeBit = (ctx: CanvasRenderingContext2D, info: CellInfo, connectionTyp
   }
 }
 
-const drawQRCode = <T>(config: DrawConfig<T>) => {
+const drawQRCode = <T>(config: DrawConfig<T>): DrawResult<T> => {
   const options = {...defaultOptions, ...config.options}
   const {ecLevel, size, bgColor, fgColor, hideLogo, padding} = options
   const {canvas} = config
