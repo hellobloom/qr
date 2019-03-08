@@ -29,4 +29,14 @@ type DrawConfig<T> = BaseConfig<T> & {
 
 type RenderConfig<T> = BaseConfig<T>
 
-export {ErrorCorrectionLevel, Options, DrawConfig, RenderConfig}
+type RenderResult<T> = {
+  update: (config: RenderConfig<T>) => void
+  remove: () => void
+}
+
+type DrawResult<T> = {
+  update: (config: DrawConfig<T>) => void
+  remove: () => void
+}
+
+export {ErrorCorrectionLevel, Options, DrawConfig, RenderConfig, DrawResult, RenderResult}

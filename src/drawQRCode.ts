@@ -297,6 +297,19 @@ const drawQRCode = <T>(config: DrawConfig<T>) => {
     }
     image.src = logoImage
   }
+
+  return {
+    update: updateQRCode(canvas),
+    remove: removeQRCode(canvas),
+  }
+}
+
+const updateQRCode = (canvas: HTMLCanvasElement) => <T>(config: DrawConfig<T>) => {
+  drawQRCode({...config, canvas})
+}
+
+const removeQRCode = (canvas: HTMLCanvasElement) => () => {
+  canvas.remove()
 }
 
 export {drawQRCode}
