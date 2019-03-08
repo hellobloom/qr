@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "storybook": "start-storybook -p 9001 -c .storybook",
+    "prepare": "npm run build",
     "build": "rm -rf dist && ./node_modules/.bin/tsc -p tsconfig.json"
   },
   "dependencies": {
