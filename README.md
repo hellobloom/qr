@@ -1,1 +1,1 @@
-# qr
+# qr: A Canvas QR Renderer
