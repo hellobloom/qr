@@ -6,6 +6,7 @@ storiesOf('qr', module).add('Bloom branded https://bloom.co QR', () => {
   div.style.padding = '25px'
   renderQRCode(div, {
     data: {url: 'https://bloom.co'},
+    options: {size: 256},
   })
   return div
 })
