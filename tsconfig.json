@@ -1,24 +1,25 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
-    "lib": ["es6", "dom"],
-    "jsx": "react",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "importHelpers": true,
     "declaration": true,
-    "declarationMap": true,
     "sourceMap": true,
-    "outDir": "dist",
+    "strict": true,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
     "noImplicitThis": true,
+    "alwaysStrict": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  },
-  "include": ["index.ts", "src"],
-  "exclude": ["node_modules", "dist"]
+    "baseUrl": ".",
+    "jsx": "react",
+    "esModuleInterop": true
+  }
 }

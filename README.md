@@ -23,15 +23,12 @@ QR comes with two entry points so you can pick what fits your need best
 When you want to render a QR code into an existing DOM node.
 
 ```typescript
-import {renderQRCode, RenderConfig} from '@bloomprotocol/qr'
+import {renderQRCode} from '@bloomprotocol/qr'
 
 const container = document.createElement('div')
+const {update, remove} = renderQRCode(container, {data: 'Hello World'})
 
-const config: RenderConfig<string> = {data: 'Hello World'}
-const {update, remove} = renderQRCode(container, config)
-
-const newConfig: RenderConfig<string> = {data: 'Updated Data'}
-update(newConfig)
+update({data: 'Updated Data'})
 
 remove()
 ```
@@ -41,14 +38,12 @@ remove()
 When you want to draw on an existing canvas element.
 
 ```typescript
-import {drawQRCode, DrawConfig} from '@bloomprotocol/qr'
+import {drawQRCode} from '@bloomprotocol/qr'
 
 const canvas = document.createElement('canvas')
-const config: DrawConfig<string> = {canvas, data: 'Hello World'}
-const {update, remove} = drawQRCode(config)
+const {update, remove} = drawQRCode(canvas, {data: 'Hello World'})
 
-const newConfig: DrawConfig<string> = {data: 'Updated Data'}
-update(newConfig)
+update({data: 'Updated Data'})
 
 remove()
 ```

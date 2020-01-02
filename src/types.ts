@@ -1,11 +1,11 @@
-enum ErrorCorrectionLevel {
+export enum ErrorCorrectionLevel {
   'L' = 1,
   'M' = 0,
   'Q' = 3,
   'H' = 2,
 }
 
-type Options = {
+export type Options = {
   ecLevel: keyof typeof ErrorCorrectionLevel
   size: number
   bgColor: string
@@ -18,25 +18,12 @@ type Options = {
   logoOpacity?: number
 }
 
-type BaseConfig<T> = {
+export type Config<T> = {
   data: T
   options?: Partial<Options>
 }
 
-type DrawConfig<T> = BaseConfig<T> & {
-  canvas: HTMLCanvasElement
-}
-
-type RenderConfig<T> = BaseConfig<T>
-
-type RenderResult<T> = {
-  update: (config: RenderConfig<T>) => void
+export type Result<T> = {
+  update: (config: Config<T>) => void
   remove: () => void
 }
-
-type DrawResult<T> = {
-  update: (config: DrawConfig<T>) => void
-  remove: () => void
-}
-
-export {ErrorCorrectionLevel, Options, DrawConfig, RenderConfig, DrawResult, RenderResult}
