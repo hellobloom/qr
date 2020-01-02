@@ -1,4 +1,4 @@
-import {DrawConfig, Options, ErrorCorrectionLevel, DrawResult} from './types'
+import {Config, Options, ErrorCorrectionLevel, Result} from './types'
 import {getBloomLogo} from './getBloomLogo'
 
 const QRCodeImpl = require('qr.js/lib/QRCode')
@@ -60,6 +60,11 @@ enum CornerType {
   topRight,
   bottomRight,
   bottomLeft,
+}
+
+enum EyePart {
+  inner,
+  outer,
 }
 
 const drawCorner = (ctx: CanvasRenderingContext2D, info: CellInfo, type: CornerType, part: EyePart) => {
@@ -144,11 +149,6 @@ class ConnectionType {
   static readonly bottom = 1 << 4
 }
 
-enum EyePart {
-  inner,
-  outer,
-}
-
 const drawEyeBit = (ctx: CanvasRenderingContext2D, info: CellInfo, connectionType: number, part: EyePart) => {
   const centerX = info.left + info.size / 2
   const centerY = info.top + info.size / 2
@@ -192,10 +192,9 @@ const drawEyeBit = (ctx: CanvasRenderingContext2D, info: CellInfo, connectionTyp
   }
 }
 
-const drawQRCode = <T>(config: DrawConfig<T>): DrawResult<T> => {
+const draw = <T>(canvas: HTMLCanvasElement, config: Config<T>) => {
   const options = {...defaultOptions, ...config.options}
   const {ecLevel, size, bgColor, fgColor, hideLogo, padding} = options
-  const {canvas} = config
 
   const qr = new QRCodeImpl(-1, ErrorCorrectionLevel[ecLevel])
   qr.addData(JSON.stringify(config.data))
@@ -212,7 +211,9 @@ const drawQRCode = <T>(config: DrawConfig<T>): DrawResult<T> => {
   // - The 1 extra from the border on top/left
   canvas.height = canvas.width = size * scale + 4
   canvas.style.height = canvas.style.width = `${size}px`
-  canvas.style.padding = (100 * padding) / size + '%'
+  canvas.style.padding = `${size * (padding / 100 / 2)}px`
+  canvas.style.boxSizing = 'border-box'
+  canvas.style.backgroundColor = bgColor
   ctx.scale(scale, scale)
 
   drawRect(ctx, bgColor, {x: 0, y: 0, w: size, h: size})
@@ -254,10 +255,8 @@ const drawQRCode = <T>(config: DrawConfig<T>): DrawResult<T> => {
             connectionType = connectionType | ConnectionType.left
           }
 
-          const isInnerEyeX =
-            (cellIndex >= 2 && cellIndex <= 4) || (cellIndex >= cells.length - 7 && cellIndex <= cells.length)
-          const isInnerEyeY =
-            (rowIndex >= 2 && rowIndex <= 4) || (rowIndex >= cells.length - 5 && rowIndex <= cells.length - 3)
+          const isInnerEyeX = (cellIndex >= 2 && cellIndex <= 4) || (cellIndex >= cells.length - 7 && cellIndex <= cells.length)
+          const isInnerEyeY = (rowIndex >= 2 && rowIndex <= 4) || (rowIndex >= cells.length - 5 && rowIndex <= cells.length - 3)
           const isInnerEye = isInnerEyeX && isInnerEyeY
 
           const eyePart = isInnerEye ? EyePart.inner : EyePart.outer
@@ -297,19 +296,17 @@ const drawQRCode = <T>(config: DrawConfig<T>): DrawResult<T> => {
     }
     image.src = logoImage
   }
+}
+
+export const drawQRCode = <T>(canvas: HTMLCanvasElement, config: Config<T>): Result<T> => {
+  draw(canvas, config)
 
   return {
-    update: updateQRCode(canvas),
-    remove: removeQRCode(canvas),
+    update: updateConfig => {
+      draw(canvas, updateConfig)
+    },
+    remove: () => {
+      canvas.remove()
+    },
   }
 }
-
-const updateQRCode = (canvas: HTMLCanvasElement) => <T>(config: DrawConfig<T>) => {
-  drawQRCode({...config, canvas})
-}
-
-const removeQRCode = (canvas: HTMLCanvasElement) => () => {
-  canvas.remove()
-}
-
-export {drawQRCode}
