@@ -14,10 +14,9 @@
   "scripts": {
     "start": "tsdx watch --tsconfig ./tsconfig.build.json",
     "build": "tsdx build --tsconfig ./tsconfig.build.json",
-    "test": "tsdx test",
     "lint": "tsdx lint src stories",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run test && npm run eslint",
+    "prepublishOnly": "npm run lint",
     "storybook": "start-storybook -p 9001"
   },
   "dependencies": {
